@@ -1,10 +1,40 @@
-name: myfork1
+name: Build and Print Echo
+
 on:
   push:
-    branches["main"]
-  edited: workflow_dispatch
+    branches:
+      - main  # Adjust the branch name as needed
 
 jobs:
-  runs-on: ubuntu-latest
-  build:
-    echo"Build Successfully"
+  build_and_print:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '14'  # Adjust the Node.js version as needed
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build project
+      run: npm run build  # Adjust the build script as needed
+
+    - name: Print success message
+      run: echo "Build successful!"
+
+    - name: Archive artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: build-artifacts
+        path: path/to/your/build  # Adjust the build output path
+
+    - name: Clean up
+      run: rm -rf path/to/your/build  # Adjust the build output path
+
+    - name: Print message after build
+      run: echo "Build completed and artifacts uploaded!"
